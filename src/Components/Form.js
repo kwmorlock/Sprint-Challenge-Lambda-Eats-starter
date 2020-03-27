@@ -7,7 +7,9 @@ const formSchema = yup.object().shape({
     name: yup.string().required("please input a name").min(2, "name must be more than 2 characters"),
     size: yup.string().required("must include a size for your pizza"),
     topping1: yup.boolean().oneOf([true || false], "pepperoni?"),
-    topping2: yup.boolean().oneOf([true || false], "black olives?")
+    topping2: yup.boolean().oneOf([true || false], "black olives?"),
+    topping3: yup.boolean().oneOf([true || false], "green peppers?"),
+    topping4: yup.boolean().oneOf([true || false], "red peppers?")
 });
 
 export default function Form() {
@@ -26,6 +28,8 @@ export default function Form() {
         size: "",
         topping1: "",
         topping2: "",
+        topping3: "",
+        topping4: "",
     });
 
     
@@ -50,6 +54,8 @@ export default function Form() {
                     size: "",
                     topping1: "",
                     topping2: "",
+                    topping3: "",
+                    topping4: "",
                 });
             })
             .catch(err => console.log(err.response));
@@ -166,7 +172,31 @@ export default function Form() {
                 />
                  {errors.topping2.length > 0 ? <p className="error">{errors.topping2}</p> : null} 
             </label>
-            
+
+            <label htmlFor="topping3">
+                Green Peppers
+                <input
+                    id='topping3'
+                    type='checkbox'
+                    name='topping3'
+                    value={formState.topping1}
+                    onChange={inputChange}
+                />
+                 {errors.topping3.length > 0 ? <p className="error">{errors.topping3}</p> : null} 
+            </label>
+
+            <label htmlFor="topping4">
+                Red Peppers
+                <input
+                    id='topping4'
+                    type='checkbox'
+                    name='topping4'
+                    value={formState.topping1}
+                    onChange={inputChange}
+                />
+                 {errors.topping4.length > 0 ? <p className="error">{errors.topping4}</p> : null} 
+            </label>
+
             <pre>{JSON.stringify(post, null, 2)}</pre>
             <button disabled={buttonDisabled}>Submit</button>
         </form>
