@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as yup from "yup";
+import {Link} from "react-router-dom"
 
 
 const formSchema = yup.object().shape({
@@ -125,6 +126,11 @@ export default function Form() {
 
     return (
         <form onSubmit={formSubmit}>
+
+           <Link to={"/"}>
+                <div>Home</div>
+            </Link>
+
             <h1>Set up your food</h1>
             <label htmlFor="name">
                 Name: 
