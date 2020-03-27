@@ -15,11 +15,13 @@ export default function Form() {
     // managing state for our form inputs
     const [formState, setFormState] = useState({
         name: "",
+        size: "",
     });
 
     // state for our errors
     const [errors, setErrors] = useState({
         name: "",
+        size: "",
     });
 
     // new state to set our post request too. So we can console.log and see it.
@@ -41,6 +43,7 @@ export default function Form() {
                 // reset form if successful
                 setFormState({
                     name: "",
+                    size: "",
                 });
             })
             .catch(err => console.log(err.response));
@@ -89,6 +92,17 @@ export default function Form() {
                     onChange={inputChange}
                 />
                 {errors.name.length > 0 ? <p className="error">{errors.name}</p> : null}
+            </label> <br/>
+            <label htmlFor="size">
+                What size pizza would you like?
+                 <select 
+                    id="size" 
+                    name="size" 
+                    onChange={inputChange}>
+                    <option value="small">small</option>
+                    <option value="medium">medium</option>
+                    <option value="large">large</option>
+                </select>
             </label> <br/>
             
             <pre>{JSON.stringify(post, null, 2)}</pre>
