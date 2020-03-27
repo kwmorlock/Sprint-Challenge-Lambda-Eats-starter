@@ -7,10 +7,11 @@ import {Link} from "react-router-dom"
 const formSchema = yup.object().shape({
     name: yup.string().required("please input a name").min(2, "name must be more than 2 characters"),
     size: yup.string().required("must include a size for your pizza"),
-    topping1: yup.boolean().oneOf([true || false], "pepperoni?"),
-    topping2: yup.boolean().oneOf([true || false], "black olives?"),
-    topping3: yup.boolean().oneOf([true || false], "green peppers?"),
-    topping4: yup.boolean().oneOf([true || false], "red peppers?")
+    topping1: yup.boolean().oneOf([true || false]),
+    topping2: yup.boolean().oneOf([true || false]),
+    topping3: yup.boolean().oneOf([true || false]),
+    topping4: yup.boolean().oneOf([true || false]),
+    instructions: yup.string().required("please input instructions"),
 });
 
 export default function Form() {
@@ -22,6 +23,7 @@ export default function Form() {
         name: "",
         size: "",
         // topping1: "",
+        instructions: "",
     });
 
     const [errors, setErrors] = useState({
@@ -31,6 +33,7 @@ export default function Form() {
         topping2: "",
         topping3: "",
         topping4: "",
+        instructions: "",
     });
 
     
@@ -57,6 +60,7 @@ export default function Form() {
                     topping2: "",
                     topping3: "",
                     topping4: "",
+                    instructions: "",
                 });
             })
             .catch(err => console.log(err.response));
@@ -98,6 +102,8 @@ export default function Form() {
         yup 
             .reach(formSchema, e.target.name)
             .validate(e.target.name ? e.target.checked : e.target.value)
+            
+
             .then(valid => {
                 setErrors({
                     ...errors,
@@ -173,7 +179,7 @@ export default function Form() {
                     id='topping2'
                     type='checkbox'
                     name='topping2'
-                    value={formState.topping1}
+                    value={formState.topping2}
                     onChange={inputChange}
                 />
                  {errors.topping2.length > 0 ? <p className="error">{errors.topping2}</p> : null} 
@@ -185,7 +191,7 @@ export default function Form() {
                     id='topping3'
                     type='checkbox'
                     name='topping3'
-                    value={formState.topping1}
+                    value={formState.topping3}
                     onChange={inputChange}
                 />
                  {errors.topping3.length > 0 ? <p className="error">{errors.topping3}</p> : null} 
@@ -197,7 +203,18 @@ export default function Form() {
                     id='topping4'
                     type='checkbox'
                     name='topping4'
-                    value={formState.topping1}
+                    value={formState.topping4}
+                    onChange={inputChange}
+                />
+                 {errors.topping4.length > 0 ? <p className="error">{errors.topping4}</p> : null} 
+            </label>
+
+            <label htmlFor="instructions">
+                Special Instructions
+                <textarea
+                    id='instructions'
+                    name='instructions'
+                    value={formState.instructrions}
                     onChange={inputChange}
                 />
                  {errors.topping4.length > 0 ? <p className="error">{errors.topping4}</p> : null} 
