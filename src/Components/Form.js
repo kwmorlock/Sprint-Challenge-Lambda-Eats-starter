@@ -5,6 +5,7 @@ import * as yup from "yup";
 
 const formSchema = yup.object().shape({
     name: yup.string().required("please input a name").min(2, "name must be more than 2 characters"),
+    size: yup.string().required("must include a size for your pizza"),
 });
 
 export default function Form() {
