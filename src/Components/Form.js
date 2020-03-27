@@ -6,25 +6,27 @@ import * as yup from "yup";
 const formSchema = yup.object().shape({
     name: yup.string().required("please input a name").min(2, "name must be more than 2 characters"),
     size: yup.string().required("must include a size for your pizza"),
+    topping1: yup.boolean().oneOf([true || false], "pepperoni?")
 });
 
 export default function Form() {
-    // state for whether our button should be disabled or not.
+    
     const [buttonDisabled, setButtonDisabled] = useState(true);
 
-    // managing state for our form inputs
+ 
     const [formState, setFormState] = useState({
         name: "",
         size: "",
+        // topping1: "",
     });
 
-    // state for our errors
     const [errors, setErrors] = useState({
         name: "",
         size: "",
+        topping1: "",
     });
 
-    // new state to set our post request too. So we can console.log and see it.
+    
     const [post, setPost] = useState([]);
 
     useEffect(() => {
@@ -38,22 +40,54 @@ export default function Form() {
         axios
             .post("https://reqres.in/api/orders", formState)
             .then(res => {
-                setPost(res.data); // get just the form data from the REST api
+                setPost(res.data); 
 
-                // reset form if successful
+               
                 setFormState({
                     name: "",
                     size: "",
+                    topping1: ""
                 });
             })
             .catch(err => console.log(err.response));
     };
 
+    // const validateChange = e => {
+       
+    //     yup
+    //         .reach(formSchema, e.target.name)
+    //         .validate(e.target.value)
+    //         .then(valid => {
+    //             setErrors({
+    //                 ...errors,
+    //                 [e.target.name]: ""
+    //             });
+    //         })
+    //         .catch(err => {
+    //             setErrors({
+    //                 ...errors,
+    //                 [e.target.name]: err.errors[0]
+    //             });
+    //         });
+    // };
+
+    // const inputChange = e => {
+    //     e.persist();
+    //     const newFormData = {
+    //         ...formState,
+    //         [e.target.name]:
+    //             e.target.type === "checkbox" ? e.target.checked : e.target.value
+    //     };
+
+    //     validateChange(e);
+    //     setFormState(newFormData);
+    // };
+
+
     const validateChange = e => {
-        // Reach will allow us to "reach" into the schema and test only one part.
-        yup
+        yup 
             .reach(formSchema, e.target.name)
-            .validate(e.target.value)
+            .validate(e.target.name === "topping1" ? e.target.checked : e.target.value)
             .then(valid => {
                 setErrors({
                     ...errors,
@@ -69,16 +103,16 @@ export default function Form() {
     };
 
     const inputChange = e => {
-        e.persist();
+        e.persist(); 
         const newFormData = {
             ...formState,
             [e.target.name]:
-                e.target.type === "checkbox" ? e.target.checked : e.target.value
+            e.target.type  === "checkbox" ? e.target.checked : e.target.value
         };
-
         validateChange(e);
         setFormState(newFormData);
     };
+
 
     return (
         <form onSubmit={formSubmit}>
@@ -93,6 +127,7 @@ export default function Form() {
                 />
                 {errors.name.length > 0 ? <p className="error">{errors.name}</p> : null}
             </label> <br/>
+
             <label htmlFor="size">
                 What size pizza would you like?
                  <select 
@@ -104,6 +139,18 @@ export default function Form() {
                     <option value="large">large</option>
                 </select>
             </label> <br/>
+
+            <label htmlFor="topping1">
+                Pepperoni
+                <input
+                    id='topping1'
+                    type='checkbox'
+                    name='topping1'
+                    value={formState.topping1}
+                    onChange={inputChange}
+                />
+                 {errors.topping1.length > 0 ? <p className="error">{errors.topping1}</p> : null} 
+            </label>
             
             <pre>{JSON.stringify(post, null, 2)}</pre>
             <button disabled={buttonDisabled}>Submit</button>
